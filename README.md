@@ -6,13 +6,15 @@ Create an inline security engine that monitors, analyses and potentially blocks 
 # Solution
 
 Create a proxy server handling requests - analyse all requests (GET/POST - assumption) with different threat detections:
-1- Allowed IPs 
-2- DDoS detection:
-Limit amount of requests per minute for this server MAX_REQUEST_PER_MINUTE = 5
-3- Malicious payload
-Block requests where payload is malicious based on MALICIOUS_PAYLOAD list (configurable)
-4- Enumeration 
-Limit amount of invalid request per IP (assumption for this example  - used as unique identifier should be improved in case of VPN)
+* Allowed IPs
+*  DDoS detection:
+    * Limit amount of requests per minute for this server MAX_REQUEST_PER_MINUTE = 5
+* Malicious payload
+    * Block requests where payload is malicious based on MALICIOUS_PAYLOAD list (configurable)
+* Enumeration 
+    * Limit amount of invalid request per IP (assumption for this example  - used as unique identifier should be improved in case of VPN)
+* User agent detection
+    * Block malicious user agents
 
 # Technical solution
 The main business logic is based on a wrapper:
@@ -23,7 +25,7 @@ request will be blocked
 
 Main logic:
 
-```
+``` python
 def detect(func):
     def wrapper(*args, **kwargs):
         payload = request.args
@@ -46,7 +48,7 @@ def detect(func):
 
 To extend the logic use this class:
 
-```
+``` python
 class ThreatDetection(abc.ABC):
     def __init__(self):
         self.logging = get_logger()
@@ -56,6 +58,7 @@ class ThreatDetection(abc.ABC):
         raise NotImplementedError()
 ```
 
+Assumption - All logics are managed in memory but should improved to work with database in case.
 
 # Deployment
 
