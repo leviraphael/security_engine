@@ -30,5 +30,3 @@ class DDoSDetection(ThreatDetection):
             self.request_counts[client_ip] = (count + 1, last_request_time)
         else:
             self.request_counts[client_ip] = (1, current_time)
-
-        return self.request_counts
