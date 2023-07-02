@@ -4,15 +4,23 @@ from flask import Flask, jsonify, request
 from requests import get
 
 from detections.ddos_detection import DDoSDetection
+from detections.enumeration_detection import EnumerationDetection
 from detections.ip_detection import IpDetection
 from detections.malicious_payload_detection import MaliciousPayloadDetection
+from detections.user_agent_detection import UserAgentDetection
 from server import logging
 
 app = Flask(__name__)
 TARGET = "http://127.0.0.1:5000/"
 
 
-app.config["detections"] = [IpDetection(), DDoSDetection(), MaliciousPayloadDetection()]
+app.config["detections"] = [
+    IpDetection(),
+    DDoSDetection(),
+    MaliciousPayloadDetection(),
+    EnumerationDetection(),
+    UserAgentDetection(),
+]
 
 
 def detect(func):
