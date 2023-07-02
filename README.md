@@ -7,6 +7,7 @@ Create an inline security engine that monitors, analyses and potentially blocks 
 
 Create a proxy server handling requests - analyse all requests (GET/POST - assumption) with different threat detections:
 * Allowed IPs
+* User agent detection
 *  DDoS detection:
     * Limit amount of requests per minute for this server MAX_REQUEST_PER_MINUTE = 5
 * Malicious payload
@@ -15,6 +16,7 @@ Create a proxy server handling requests - analyse all requests (GET/POST - assum
     * Limit amount of invalid request per IP (assumption for this example  - used as unique identifier should be improved in case of VPN)
 * User agent detection
     * Block malicious user agents
+
 
 # Technical solution
 The main business logic is based on a wrapper:
@@ -101,3 +103,12 @@ pytest tests/test_server.py
 
 # Monitor
 All logs are written in /tmp/app.log file (it will be used as monitor base - should be send to real tool with analysis/monitor capabilities to get alert in real time)
+
+# Future work
+1. Extend the number of detections (TLS protocol, server side request forgery, weak encryption, ...)
+2. Block IPs after detection (for example after DDoS attack, add the IP to blocked IP)
+3. Extend tests coverage (currently one positive and negative for each detection)
+4. Create a real monitor based on logs (stored properly in DB)
+5. Use DB to store IPs and counters for (DDoS and enumeration attacks)
+6. Add more logs 
+7. Deploy the proxy on docker
